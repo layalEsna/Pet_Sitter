@@ -103,6 +103,13 @@ class PetSitter(db.Model, SerializerMixin):
     location = db.Column(db.String, nullable=False)
     price = db.Column(db.Integer, nullable=False)
 
+
+    pet_owners = db.relationship('PetOwner', secondary='appointments', back_populates='pet_sitters')
+    appointments = db.relationship('Appointment', back_populates='pet_sitter', cascade='all, delete-orphan')
+
+    serialize_only = ('id', 'sitter_name', 'location', 'price')
+
+
     @validates('sitter_name')
     def sitter_name_validate(self, key, sitter_name):
         if not sitter_name or not isinstance(sitter_name, str):
