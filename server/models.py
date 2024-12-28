@@ -108,6 +108,13 @@ class PetSitter(db.Model, SerializerMixin):
         if not sitter_name or not isinstance(sitter_name, str):
             raise ValueError('Pet sitter name is required and must be type of string.')
         return sitter_name
+    
+    def avg_rating(self):
+        from sqlalchemy import func
+        rating = db.session.query(func.avg(Appointment.rating)).filter(
+            Appointment.pet_sitter_id == self.id).filter(Appointment.rating != None).scalar()
+        return round(rating, 2) if rating else None
+
 
     
 
