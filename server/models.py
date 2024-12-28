@@ -64,23 +64,23 @@ class PetOwner(db.Model, SerializerMixin):
             raise ValueError(f'Invalid pet type: {pet_type}. Must be one of {valid_pets}.')
         return pet_type
     
-    # @validates('zip_code')
-    # def zip_code_validate(self, key, zip_code):
-    #     """
-    #     Validates that the zip code:
-    #     - Is a string of digits.
-    #     - Has exactly 5 characters.
-    #     - Exists in the real-world zip code database using the `uszipcode` library.
+    @validates('zip_code')
+    def zip_code_validate(self, key, zip_code):
+        """
+        Validates that the zip code:
+        - Is a string of digits.
+        - Has exactly 5 characters.
+        - Exists in the real-world zip code database using the `uszipcode` library.
     
-    #     Raises a ValueError if the zip code is invalid.
-    #     """
-    #     if not zip_code or not zip_code.isdigit() or len(zip_code) != 5:
-    #         raise ValueError('Zip code must be a string of digits and must have 5 characters.')
+        Raises a ValueError if the zip code is invalid.
+        """
+        if not zip_code or not zip_code.isdigit() or len(zip_code) != 5:
+            raise ValueError('Zip code must be a string of digits and must have 5 characters.')
 
-    #     result = self.search_engine.by_zipcode(zip_code)
-    #     if not result.zipcode:
-    #         raise ValueError(f'Invalid zip code: {zip_code}')
-    #     return zip_code
+        result = self.search_engine.by_zipcode(zip_code)
+        if not result.zipcode:
+            raise ValueError(f'Invalid zip code: {zip_code}')
+        return zip_code
 
     # def to_dict(self):
     #     return {
