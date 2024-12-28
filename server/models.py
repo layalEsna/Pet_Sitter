@@ -111,3 +111,10 @@ class PetSitter(db.Model, SerializerMixin):
 
     
 
+class Appointment(db.Model, SerializerMixin):
+    __tablename__ = 'appointments'
+
+    id = db.Column(db.Integer, primary_key=True)
+    date = db.Column(db.Date, nullable=False)
+    duration = db.Column(db.Float, nullable=False)
+    rating = db.Column(db.Integer, nullable=True, default=None)
