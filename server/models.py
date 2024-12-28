@@ -29,8 +29,8 @@ class PetOwner(db.Model, SerializerMixin):
     # pet_sitters = db.relationship('PetSitter', secondary='appointments', back_populates='pet_owners')
     # appointments = db.relationship('Appointment', back_populates='pet_owner', cascade='all, delete-orphan')
 
-    # serialize_only = ('id', 'user_name', 'pet_name', 'pet_type', 'zip_code')
-    # search_engine = SearchEngine(simple_zipcode=True)
+    serialize_only = ('id', 'user_name', 'pet_name', 'pet_type', 'zip_code')
+    search_engine = SearchEngine(simple_zipcode=True)
 
     @property
     def password(self):
@@ -82,14 +82,14 @@ class PetOwner(db.Model, SerializerMixin):
             raise ValueError(f'Invalid zip code: {zip_code}')
         return zip_code
 
-    # def to_dict(self):
-    #     return {
-    #         'id': self.id,
-    #         'user_name': self.user_name,
-    #         'pet_name': self.pet_name,
-    #         'pet_type': self.pet_type,
-    #         'zip_code': self.zip_code
-    #     }
+    def to_dict(self):
+        return {
+            'id': self.id,
+            'user_name': self.user_name,
+            'pet_name': self.pet_name,
+            'pet_type': self.pet_type,
+            'zip_code': self.zip_code
+        }
 
 
     def __repr__(self):
