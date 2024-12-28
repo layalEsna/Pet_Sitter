@@ -95,11 +95,19 @@ class PetOwner(db.Model, SerializerMixin):
     def __repr__(self):
         return f'<Pet {self.user_name}>'
     
-class PetSitter(Base, SerializerMixin):
+class PetSitter(db.Model, SerializerMixin):
     __tablename__ = 'pet_sitters'
 
     id = db.Column(db.Integer, primary_key=True)
     sitter_name = db.Column(db.String, nullable=False)
     location = db.Column(db.String, nullable=False)
     price = db.Column(db.Integer, nullable=False)
+
+    @validates('sitter_name')
+    def sitter_name_validate(self, key, sitter_name):
+        if not sitter_name or not isinstance(sitter_name, str):
+            raise ValueError('Pet sitter name is required and must be type of string.')
+        return sitter_name
+
+    
 
