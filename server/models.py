@@ -94,3 +94,12 @@ class PetOwner(db.Model, SerializerMixin):
 
     def __repr__(self):
         return f'<Pet {self.user_name}>'
+    
+class PetSitter(Base, SerializerMixin):
+    __tablename__ = 'pet_sitters'
+
+    id = db.Column(db.Integer, primary_key=True)
+    sitter_name = db.Column(db.String, nullable=False)
+    location = db.Column(db.String, nullable=False)
+    price = db.Column(db.Integer, nullable=False)
+
