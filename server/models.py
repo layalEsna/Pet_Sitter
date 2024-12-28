@@ -43,11 +43,11 @@ class PetOwner(db.Model, SerializerMixin):
     def check_password(self, password):
         return bcrypt.check_password_hash(self._hash_password, password)
 
-    # @validates('user_name')
-    # def user_name_validate(self, key, user_name):
-    #     if not user_name or not isinstance(user_name, str):
-    #         raise ValueError('user name is required and must be type of string.')
-    #     return user_name
+    @validates('user_name')
+    def user_name_validate(self, key, user_name):
+        if not user_name or not isinstance(user_name, str):
+            raise ValueError('user name is required and must be type of string.')
+        return user_name
     
     # @validates('pet_name')
     # def pet_name_validate(self, key, pet_name):
