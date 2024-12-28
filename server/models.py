@@ -38,6 +38,8 @@ class PetOwner(db.Model, SerializerMixin):
 
     @password.setter
     def password(self, password):
+        if len(password) < 8:
+            raise ValueError('Password must be at least 8 characters long.')
         self._hash_password = bcrypt.generate_password_hash(password).decode('utf-8')
 
     def check_password(self, password):
