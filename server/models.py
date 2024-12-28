@@ -26,8 +26,8 @@ class PetOwner(db.Model, SerializerMixin):
     pet_type = db.Column(db.String, nullable=False)
     zip_code = db.Column(db.String, nullable=False)
 
-    # pet_sitters = db.relationship('PetSitter', secondary='appointments', back_populates='pet_owners')
-    # appointments = db.relationship('Appointment', back_populates='pet_owner', cascade='all, delete-orphan')
+    pet_sitters = db.relationship('PetSitter', secondary='appointments', back_populates='pet_owners')
+    appointments = db.relationship('Appointment', back_populates='pet_owner', cascade='all, delete-orphan')
 
     serialize_only = ('id', 'user_name', 'pet_name', 'pet_type', 'zip_code')
     search_engine = SearchEngine(simple_zipcode=True)
