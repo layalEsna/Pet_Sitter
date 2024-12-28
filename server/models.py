@@ -32,16 +32,16 @@ class PetOwner(db.Model, SerializerMixin):
     # serialize_only = ('id', 'user_name', 'pet_name', 'pet_type', 'zip_code')
     # search_engine = SearchEngine(simple_zipcode=True)
 
-    # @property
-    # def password(self):
-    #     raise AttributeError('password is not a readable attribute')
+    @property
+    def password(self):
+        raise AttributeError('password is not a readable attribute')
 
-    # @password.setter
-    # def password(self, password):
-    #     self._hash_password = bcrypt.generate_password_hash(password).decode('utf-8')
+    @password.setter
+    def password(self, password):
+        self._hash_password = bcrypt.generate_password_hash(password).decode('utf-8')
 
-    # def check_password(self, password):
-    #     return bcrypt.check_password_hash(self._hash_password, password)
+    def check_password(self, password):
+        return bcrypt.check_password_hash(self._hash_password, password)
 
     # @validates('user_name')
     # def user_name_validate(self, key, user_name):
