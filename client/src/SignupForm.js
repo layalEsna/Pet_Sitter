@@ -1,4 +1,6 @@
 import { useState } from "react";
+import "./index.css";
+
 
 function SignupForm() {
     
@@ -30,6 +32,7 @@ function SignupForm() {
                     onChange={handleFormData}
                 />
             </div>
+            <br/>
             <div>
                 <label>Create password</label>
                 <input
@@ -39,6 +42,7 @@ function SignupForm() {
                     onChange={handleFormData}
                 />
             </div>
+            <br/>
             <div>
                 <label>Confirm password</label>
                 <input
@@ -48,6 +52,7 @@ function SignupForm() {
                     onChange={handleFormData}
                 />
             </div>
+            <br/>
             <div>
                 <label>Pet name</label>
                 <input
@@ -57,6 +62,7 @@ function SignupForm() {
                     onChange={handleFormData}
                 />
             </div>
+            <br/>
             <div>
                 <label>Create username</label>
                 <select
@@ -70,6 +76,7 @@ function SignupForm() {
                     <option value="bird">bird</option>
                 </select>
             </div>
+            <br/>
             <div>
                 <label>Zip code</label>
                 <input
@@ -79,6 +86,7 @@ function SignupForm() {
                     onChange={handleFormData}
                 />
             </div>
+            <br/>
             <div>
                 <button type="submit">Submit</button>
             </div>
