@@ -18,6 +18,7 @@ function SignupForm() {
             [e.target.name]: e.target.value
         })
     }
+
     return (
         <form>
             <div>
