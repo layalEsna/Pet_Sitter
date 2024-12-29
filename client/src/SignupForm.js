@@ -11,4 +11,80 @@ function SignupForm() {
         zip_code: ''
 
     })
+
+    function handleFormData(e) {
+        setFormData({
+            ...formData,
+            [e.target.name]: e.target.value
+        })
+    }
+    return (
+        <form>
+            <div>
+                <label>Create username</label>
+                <input
+                    name="user_name"
+                    value={formData.user_name}
+                    type="text"
+                    onChange={handleFormData}
+                />
+            </div>
+            <div>
+                <label>Create password</label>
+                <input
+                    name="password"
+                    value={formData.password}
+                    type="password"
+                    onChange={handleFormData}
+                />
+            </div>
+            <div>
+                <label>Confirm password</label>
+                <input
+                    name="confirm_password"
+                    value={formData.confirm_password}
+                    type="password"
+                    onChange={handleFormData}
+                />
+            </div>
+            <div>
+                <label>Pet name</label>
+                <input
+                    name="pet_name"
+                    value={formData.pet_name}
+                    type="text"
+                    onChange={handleFormData}
+                />
+            </div>
+            <div>
+                <label>Create username</label>
+                <select
+                    name="pet_type"
+                    value={formData.pet_type}
+                    onChange={handleFormData}
+                >
+                    <option value="">Select one</option>
+                    <option value="cat">cat</option>
+                    <option value="dog">dog</option>
+                    <option value="bird">bird</option>
+                </select>
+            </div>
+            <div>
+                <label>Zip code</label>
+                <input
+                    name="zip_code"
+                    value={formData.zip_code}
+                    type="text"
+                    onChange={handleFormData}
+                />
+            </div>
+            <div>
+                <button type="submit">Submit</button>
+            </div>
+        </form>
+    )
+
+
+
 }
+export default SignupForm
