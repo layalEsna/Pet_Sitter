@@ -1,6 +1,7 @@
 # app.py
 
-from flask import Flask, request
+from flask import Flask, request, jsonify
+import logging
 
 from flask_wtf import FlaskForm
 from wtforms import PasswordField, StringField
@@ -25,6 +26,40 @@ migrate = Migrate(app, db)
 @app.route("/")
 def home():
     return "Welcome to the Pet Sitter app!"
+
+
+@app.route('/signup', methods=['POST'])
+def post():
+    try:
+        data = request.get_json()
+        logging.debug(f"Received data: {data}")  # Log the received data
+        
+       
+        user_name = data.get('user_name')
+        password = data.get('password')
+        pet_name = data.get('pet_name')
+        pet_type = data.get('pet_type')
+        zip_code = data.get('zip_code')
+
+        logging.debug(f"User Name: {user_name}, Password: {password}, Pet Name: {pet_name}, Pet Type: {pet_type}, Zip Code: {zip_code}")
+        
+        if not all([user_name, password, pet_name, pet_type, zip_code]):
+            return jsonify({'error': 'All fields are required.'}), 400
+        new_pet_owner = PetOwner(
+            user_name=user_name,
+            password=password,
+            pet_name=pet_name,
+            pet_type=pet_type,
+            zip_code=zip_code
+        )
+        db.session.add(new_pet_owner)  # Add to the session
+        db.session.commit()  # Commit to the database
+        return jsonify(new_pet_owner.to_dict()), 201
+    except Exception as e:
+        logging.error(f"An error occurred during signup: {str(e)}")  # Log the exception
+        return jsonify({'error': f"An error occurred: {str(e)}"}), 500
+
+
 
 if __name__ == "__main__":
     app.run(debug=True)
