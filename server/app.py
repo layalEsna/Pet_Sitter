@@ -3,11 +3,6 @@
 from flask import Flask, request, jsonify
 import logging
 
-from flask_wtf import FlaskForm
-from wtforms import PasswordField, StringField
-from wtforms.validators import InputRequired, Length, EqualTo
-
-
 from flask_migrate import Migrate
 from models import db, bcrypt, PetOwner  
 
@@ -32,22 +27,28 @@ def home():
 def post():
     try:
         data = request.get_json()
-        logging.debug(f"Received data: {data}")  # Log the received data
+        # logging.debug(f"Received data: {data}")  # Log the received data
         
        
         user_name = data.get('user_name')
         password = data.get('password')
+        confirm_password = data.get('confirm_password')
         pet_name = data.get('pet_name')
         pet_type = data.get('pet_type')
         zip_code = data.get('zip_code')
 
-        logging.debug(f"User Name: {user_name}, Password: {password}, Pet Name: {pet_name}, Pet Type: {pet_type}, Zip Code: {zip_code}")
-        
-        if not all([user_name, password, pet_name, pet_type, zip_code]):
+        if password != confirm_password:
+            return jsonify({'error': 'Password do not match'}), 400
+               
+        if not all([user_name, password, confirm_password, pet_name, pet_type, zip_code]):
             return jsonify({'error': 'All fields are required.'}), 400
+        
+        if PetOwner.query.filter(PetOwner.user_name==user_name).first():
+            return jsonify({'error': 'Username already exists. Please choose another one.'}), 400
         new_pet_owner = PetOwner(
             user_name=user_name,
             password=password,
+    
             pet_name=pet_name,
             pet_type=pet_type,
             zip_code=zip_code
