@@ -53,6 +53,7 @@ function SignupForm() {
                     <div>{ formik.errors.user_name}</div>
                 )}
             </div>
+            <br/>
             <div>
                 <label htmlFor='password'>Create password</label>
                 <input
@@ -68,6 +69,7 @@ function SignupForm() {
                     )}
                 </div>
             </div>
+            <br/>
             <div>
                 <label htmlFor='confirm_password'>Confirm password</label>
                 <input
@@ -83,6 +85,7 @@ function SignupForm() {
                     )}
                 </div>
             </div>
+            <br/>
             <div>
                 <label htmlFor='pet_name'>Pet name</label>
                 <input
@@ -93,13 +96,15 @@ function SignupForm() {
                     onChange={formik.handleChange}
                 />
             </div>
+            
             <div>
                 {formik.errors.pet_name && formik.touched.pet_name && (
                     <div>{ formik.errors.pet_name}</div>
                 )}
             </div>
+            <br/>
             <div>
-                <label htmlFor='pet_type'>
+                <label htmlFor='pet_type'>Pet Type</label>
                     <div>
                     <select
                         id='pet_type'
@@ -120,8 +125,9 @@ function SignupForm() {
                         )}
                     </div>
 
-                </label>
+                
             </div>
+            <br/>
             <div>
                 <label htmlFor='zip_code'>Zip code</label>
                 <input
@@ -137,6 +143,7 @@ function SignupForm() {
                     <div>{ formik.errors.zip_code}</div>
                 )}
             </div>
+            <br/>
             <div><button type='submit'>Sign Up</button></div>
 
         </form>

@@ -6,8 +6,11 @@ import logging
 from flask_migrate import Migrate
 from models import db, bcrypt, PetOwner  
 
+from flask_cors import CORS
+
 app = Flask(__name__)
 
+CORS(app)
 # Database configuration
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///app.db'  
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -48,13 +51,12 @@ def post():
         new_pet_owner = PetOwner(
             user_name=user_name,
             password=password,
-    
             pet_name=pet_name,
             pet_type=pet_type,
             zip_code=zip_code
         )
-        db.session.add(new_pet_owner)  # Add to the session
-        db.session.commit()  # Commit to the database
+        db.session.add(new_pet_owner)  
+        db.session.commit()  
         return jsonify(new_pet_owner.to_dict()), 201
     except Exception as e:
         logging.error(f"An error occurred during signup: {str(e)}")  # Log the exception

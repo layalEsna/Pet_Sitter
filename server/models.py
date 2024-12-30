@@ -116,7 +116,25 @@ class PetSitter(db.Model, SerializerMixin):
     def sitter_name_validate(self, key, sitter_name):
         if not sitter_name or not isinstance(sitter_name, str):
             raise ValueError('Pet sitter name is required and must be type of string.')
+        if len (sitter_name) < 5:
+            raise ValueError ('Pet Sitter name must be at least 5 characters.')
+    
         return sitter_name
+    @validates('location')
+    def location_validate(self, key, location):
+        if not location or not isinstance(location, str):
+            raise ValueError ('Location is required and must be type of string.')
+        if len (location) < 10:
+            raise ValueError('Location must be at least 10 characters.')
+        return location
+    
+    @validates('price')
+    def price_validate(self, key, price):
+        if not price or not isinstance(price, int):
+            raise ValueError('Price is required and must be an integer')
+        if price < 50 or price > 70:
+            raise ValueError('Price must be between 50 and 70 inclusive.')
+        return price
     
     def avg_rating(self):
         from sqlalchemy import func
