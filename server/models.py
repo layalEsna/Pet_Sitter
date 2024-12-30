@@ -9,7 +9,7 @@ from sqlalchemy.orm import validates
 from uszipcode import SearchEngine
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.ext.hybrid import hybrid_property
-
+from enum import Enum
 
 
 db = SQLAlchemy()
@@ -24,13 +24,14 @@ class PetOwner(db.Model, SerializerMixin):
     _hash_password = db.Column(db.String, nullable=False)
     pet_name = db.Column(db.String, nullable=False)
     pet_type = db.Column(db.String, nullable=False)
-    zip_code = db.Column(db.String, nullable=False)
+    zip_code = db.Column(db.String, nullable=False, index=True)
 
     pet_sitters = db.relationship('PetSitter', secondary='appointments', back_populates='pet_owners')
-    appointments = db.relationship('Appointment', back_populates='pet_owner', cascade='all, delete-orphan')
+    appointments = db.relationship('Appointment', back_populates='pet_owner', cascade='all, delete-orphan',  overlaps="pet_sitters")
 
     serialize_only = ('id', 'user_name', 'pet_name', 'pet_type', 'zip_code')
     search_engine = SearchEngine(simple_zipcode=True)
+
 
     @property
     def password(self):
@@ -106,8 +107,8 @@ class PetSitter(db.Model, SerializerMixin):
     price = db.Column(db.Integer, nullable=False)
 
 
-    pet_owners = db.relationship('PetOwner', secondary='appointments', back_populates='pet_sitters')
-    appointments = db.relationship('Appointment', back_populates='pet_sitter', cascade='all, delete-orphan')
+    pet_owners = db.relationship('PetOwner', secondary='appointments', back_populates='pet_sitters', overlaps="appointments")
+    appointments = db.relationship('Appointment', back_populates='pet_sitter', cascade='all, delete-orphan', overlaps="pet_owners,pet_sitters")
 
     serialize_only = ('id', 'sitter_name', 'location', 'price')
 
@@ -143,7 +144,10 @@ class PetSitter(db.Model, SerializerMixin):
         return round(rating, 2) if rating else None
 
 
-    
+class AppointmentStatus(Enum):
+       SCHEDULED = 'Scheduled'
+       COMPLETED = 'Completed'
+       CANCELLED = 'Cancelled'
 
 class Appointment(db.Model, SerializerMixin):
     __tablename__ = 'appointments'
@@ -152,14 +156,14 @@ class Appointment(db.Model, SerializerMixin):
     date = db.Column(db.Date, nullable=False)
     duration = db.Column(db.Float, nullable=False)
     rating = db.Column(db.Integer, nullable=True, default=None)
-    status = db.Column(db.String, nullable=False)
+    status = db.Column(db.Enum(AppointmentStatus), nullable=False)
 
     pet_owner_id = db.Column(db.Integer, db.ForeignKey('pet_owners.id'), nullable=False)
     pet_sitter_id = db.Column(db.Integer, db.ForeignKey('pet_sitters.id'), nullable=False)
 
-    pet_owner = db.relationship('PetOwner', back_populates='appointments')
-    pet_sitter = db.relationship('PetSitter', back_populates='appointments')
-
+    pet_owner = db.relationship('PetOwner', back_populates='appointments', overlaps='pet_sitters, pet_owners')
+    pet_sitter = db.relationship('PetSitter', back_populates='appointments', overlaps='pet_sitters, pet_owners')
+  
     serialize_only = ('id', 'date', 'duration', 'rating', 'status', 'pet_owner_id', 'pet_sitter_id')
 
 
