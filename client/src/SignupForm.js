@@ -1,99 +1,47 @@
-import { useState } from "react";
-import "./index.css";
+
+import React from 'react';
+import { useFormik } from 'formik';
+import * as Yup from 'yup';
 
 
 function SignupForm() {
-    
-    const [formData, setFormData] = useState({
-        user_name: '',
-        password: '',
-        confirm_password: '',
-        pet_name: '',
-        pet_type: '',
-        zip_code: ''
 
+    const formik = useFormik({
+        initialValues: {
+          user_name: '',
+          password: '',
+          confirm_password: '',
+          pet_name: '',
+          pet_type: '',
+          zip_code: '',
+        },
+        validationSchema: Yup.object({
+            user_name: Yup.string()
+                .min(3, 'Username must be at least 3 characters.')
+                .required('Username is required.'),
+            password: Yup.string()
+                .min(8, 'Password must be at least 8 characters')
+                .required('Password is required.'),
+            confirm_password: Yup.string()
+                .oneOf([Yup.ref('password'), null], 'Password must match')
+                .required('Confirm password is required.'),
+            pet_name: Yup.string()
+                .required('Pet name is required'),
+            pet_type: Yup.string()
+                .required('Pet type is required.'),
+            zip_code: Yup.string()
+                .matches(/^\d{5}$/, 'Zip code must be a valid 5-digit number')
+                .required('Zip code is requied')
+             })
     })
+    
+    
 
-    function handleFormData(e) {
-        setFormData({
-            ...formData,
-            [e.target.name]: e.target.value
-        })
-    }
 
-    return (
-        <form>
-            <div>
-                <label>Create username</label>
-                <input
-                    name="user_name"
-                    value={formData.user_name}
-                    type="text"
-                    onChange={handleFormData}
-                />
-            </div>
-            <br/>
-            <div>
-                <label>Create password</label>
-                <input
-                    name="password"
-                    value={formData.password}
-                    type="password"
-                    onChange={handleFormData}
-                />
-            </div>
-            <br/>
-            <div>
-                <label>Confirm password</label>
-                <input
-                    name="confirm_password"
-                    value={formData.confirm_password}
-                    type="password"
-                    onChange={handleFormData}
-                />
-            </div>
-            <br/>
-            <div>
-                <label>Pet name</label>
-                <input
-                    name="pet_name"
-                    value={formData.pet_name}
-                    type="text"
-                    onChange={handleFormData}
-                />
-            </div>
-            <br/>
-            <div>
-                <label>Create username</label>
-                <select
-                    name="pet_type"
-                    value={formData.pet_type}
-                    onChange={handleFormData}
-                >
-                    <option value="">Select one</option>
-                    <option value="cat">cat</option>
-                    <option value="dog">dog</option>
-                    <option value="bird">bird</option>
-                </select>
-            </div>
-            <br/>
-            <div>
-                <label>Zip code</label>
-                <input
-                    name="zip_code"
-                    value={formData.zip_code}
-                    type="text"
-                    onChange={handleFormData}
-                />
-            </div>
-            <br/>
-            <div>
-                <button type="submit">Submit</button>
-            </div>
-        </form>
-    )
 
+    
 
 
 }
+
 export default SignupForm
