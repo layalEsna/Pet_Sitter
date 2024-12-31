@@ -65,7 +65,7 @@ def post():
 @app.route('/pet_sitters')
 def get():
     pet_sitters = PetSitter.query.all()
-    return [sitter.todict() for sitter in pet_sitters]
+    return jsonify([sitter.to_dict() for sitter in pet_sitters])
 
 if __name__ == "__main__":
     app.run(debug=True)

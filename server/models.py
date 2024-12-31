@@ -112,7 +112,9 @@ class PetSitter(db.Model, SerializerMixin):
 
     serialize_only = ('id', 'sitter_name', 'location', 'price')
 
-
+    def to_dict(self):
+        return {field: getattr(self, field) for field in self.serialize_only}
+    
     @validates('sitter_name')
     def sitter_name_validate(self, key, sitter_name):
         if not sitter_name or not isinstance(sitter_name, str):
