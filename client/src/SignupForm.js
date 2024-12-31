@@ -8,12 +8,12 @@ function SignupForm() {
 
     const formik = useFormik({
         initialValues: {
-          user_name: '',
-          password: '',
-          confirm_password: '',
-          pet_name: '',
-          pet_type: '',
-          zip_code: '',
+            user_name: '',
+            password: '',
+            confirm_password: '',
+            pet_name: '',
+            pet_type: '',
+            zip_code: '',
         },
         validationSchema: Yup.object({
             user_name: Yup.string()
@@ -37,7 +37,7 @@ function SignupForm() {
             console.log(`Form data: ${values}`)
         }
     })
-    
+
     return (
         <form onSubmit={formik.handleSubmit}>
             <div>
@@ -50,10 +50,10 @@ function SignupForm() {
                     onChange={formik.handleChange}
                 />
                 {formik.errors.user_name && formik.touched.user_name && (
-                    <div>{ formik.errors.user_name}</div>
+                    <div className='error'>{formik.errors.user_name}</div>
                 )}
             </div>
-            <br/>
+            <br />
             <div>
                 <label htmlFor='password'>Create password</label>
                 <input
@@ -65,11 +65,11 @@ function SignupForm() {
                 />
                 <div>
                     {formik.errors.password && formik.touched.password && (
-                        <div>{ formik.errors.password}</div>
+                        <div className='error'>{formik.errors.password}</div>
                     )}
                 </div>
             </div>
-            <br/>
+            <br />
             <div>
                 <label htmlFor='confirm_password'>Confirm password</label>
                 <input
@@ -81,11 +81,11 @@ function SignupForm() {
                 />
                 <div>
                     {formik.errors.confirm_password && formik.touched.confirm_password && (
-                        <div>{ formik.errors.confirm_password}</div>
+                        <div className='error'>{formik.errors.confirm_password}</div>
                     )}
                 </div>
             </div>
-            <br/>
+            <br />
             <div>
                 <label htmlFor='pet_name'>Pet name</label>
                 <input
@@ -96,38 +96,38 @@ function SignupForm() {
                     onChange={formik.handleChange}
                 />
             </div>
-            
+
             <div>
                 {formik.errors.pet_name && formik.touched.pet_name && (
-                    <div>{ formik.errors.pet_name}</div>
+                    <div className='error'>{formik.errors.pet_name}</div>
                 )}
             </div>
-            <br/>
+            <br />
             <div>
                 <label htmlFor='pet_type'>Pet Type</label>
-                    <div>
+                <div>
                     <select
                         id='pet_type'
                         name='pet_type'
                         value={formik.values.pet_type}
                         onChange={formik.handleChange}>
-                        
+
                         <option value=''>Select one</option>
                         <option value='cat'>Cat</option>
                         <option value='dog'>Dog</option>
                         <option value='bird'>Bird</option>
 
-                        </select>
-                        </div>
-                    <div>
-                        {formik.errors.pet_type && formik.touched.pet_type && (
-                            <div>{ formik.errors.pet_type}</div>
-                        )}
-                    </div>
+                    </select>
+                </div>
+                <div>
+                    {formik.errors.pet_type && formik.touched.pet_type && (
+                        <div className='error'>{formik.errors.pet_type}</div>
+                    )}
+                </div>
 
-                
+
             </div>
-            <br/>
+            <br />
             <div>
                 <label htmlFor='zip_code'>Zip code</label>
                 <input
@@ -140,14 +140,14 @@ function SignupForm() {
             </div>
             <div>
                 {formik.errors.zip_code && formik.touched.zip_code && (
-                    <div>{ formik.errors.zip_code}</div>
+                    <div className='error'>{formik.errors.zip_code}</div>
                 )}
             </div>
-            <br/>
+            <br />
             <div><button type='submit'>Sign Up</button></div>
 
         </form>
     )
-    }
+}
 
 export default SignupForm
