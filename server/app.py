@@ -4,7 +4,7 @@ from flask import Flask, request, jsonify
 import logging
 
 from flask_migrate import Migrate
-from models import db, bcrypt, PetOwner  
+from models import db, bcrypt, PetOwner, PetSitter 
 
 from flask_cors import CORS
 
@@ -62,7 +62,10 @@ def post():
         logging.error(f"An error occurred during signup: {str(e)}")  # Log the exception
         return jsonify({'error': f"An error occurred: {str(e)}"}), 500
 
-
+@app.route('/pet_sitters')
+def get():
+    pet_sitters = PetSitter.query.all()
+    return [sitter.todict() for sitter in pet_sitters]
 
 if __name__ == "__main__":
     app.run(debug=True)
