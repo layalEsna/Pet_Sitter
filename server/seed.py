@@ -13,6 +13,8 @@ pet_sitters = [PetSitter(
 ]
   
 with app.app_context():
+    PetSitter.query.delete()
+    db.session.commit()
     for sitter in pet_sitters:
         db.session.add(sitter)
     db.session.commit()

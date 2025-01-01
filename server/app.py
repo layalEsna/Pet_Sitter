@@ -67,5 +67,16 @@ def get():
     pet_sitters = PetSitter.query.all()
     return jsonify([sitter.to_dict() for sitter in pet_sitters])
 
+@app.route('/appointment')
+def post():
+
+    data = request.get_json()
+    date = data.get('date')
+    duration = data.get('duration')
+    rating = data.get('data')
+
+
+
+
 if __name__ == "__main__":
     app.run(debug=True)
