@@ -11,9 +11,9 @@ function SignupForm() {
             user_name: '',
             password: '',
             confirm_password: '',
-            pet_name: '',
-            pet_type: '',
-            zip_code: '',
+            // pet_name: '',
+            // pet_type: '',
+            // zip_code: '',
         },
         validationSchema: Yup.object({
             user_name: Yup.string()
@@ -25,13 +25,13 @@ function SignupForm() {
             confirm_password: Yup.string()
                 .oneOf([Yup.ref('password'), null], 'Password must match')
                 .required('Confirm password is required.'),
-            pet_name: Yup.string()
-                .required('Pet name is required'),
-            pet_type: Yup.string()
-                .required('Pet type is required.'),
-            zip_code: Yup.string()
-                .matches(/^\d{5}$/, 'Zip code must be a valid 5-digit number')
-                .required('Zip code is requied')
+            // pet_name: Yup.string()
+            //     .required('Pet name is required'),
+            // pet_type: Yup.string()
+            //     .required('Pet type is required.'),
+            // zip_code: Yup.string()
+            //     .matches(/^\d{5}$/, 'Zip code must be a valid 5-digit number')
+            //     .required('Zip code is requied')
         }),
         onSubmit: (values) => {
             console.log(`Form data: ${values}`)
@@ -85,8 +85,8 @@ function SignupForm() {
                     )}
                 </div>
             </div>
-            <br />
-            <div>
+            {/* <br /> */}
+            {/* <div>
                 <label htmlFor='pet_name'>Pet name</label>
                 <input
                     id='pet_name'
@@ -95,9 +95,9 @@ function SignupForm() {
                     value={formik.values.pet_name}
                     onChange={formik.handleChange}
                 />
-            </div>
+            </div> */}
 
-            <div>
+            {/* <div>
                 {formik.errors.pet_name && formik.touched.pet_name && (
                     <div className='error'>{formik.errors.pet_name}</div>
                 )}
@@ -126,9 +126,9 @@ function SignupForm() {
                 </div>
 
 
-            </div>
+            </div> */}
             <br />
-            <div>
+            {/* <div>
                 <label htmlFor='zip_code'>Zip code</label>
                 <input
                     id='zip_code'
@@ -143,7 +143,7 @@ function SignupForm() {
                     <div className='error'>{formik.errors.zip_code}</div>
                 )}
             </div>
-            <br />
+            <br /> */}
             <div><button type='submit'>Sign Up</button></div>
 
         </form>
