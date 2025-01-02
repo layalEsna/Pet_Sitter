@@ -11,14 +11,15 @@ function App() {
       <div>
         <h1>Signup Form</h1>
 
-        <SignupForm />
+        {/* <SignupForm />
         <PetSittersPage />
-        <Appointment/>
+        <Appointment/> */}
 
-        {/* <Routes>
+        <Routes>
           <Route path="/signup" element={<SignupForm />} />
           <Route path="/pet_sitters" element={<PetSittersPage />} />
-        </Routes> */}
+          <Route path="/appointment" element={<Appointment />} />
+        </Routes>
       </div>
     </Router>
   );

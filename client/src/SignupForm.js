@@ -11,9 +11,7 @@ function SignupForm() {
             user_name: '',
             password: '',
             confirm_password: '',
-            // pet_name: '',
-            // pet_type: '',
-            // zip_code: '',
+            
         },
         validationSchema: Yup.object({
             user_name: Yup.string()
@@ -25,18 +23,30 @@ function SignupForm() {
             confirm_password: Yup.string()
                 .oneOf([Yup.ref('password'), null], 'Password must match')
                 .required('Confirm password is required.'),
-            // pet_name: Yup.string()
-            //     .required('Pet name is required'),
-            // pet_type: Yup.string()
-            //     .required('Pet type is required.'),
-            // zip_code: Yup.string()
-            //     .matches(/^\d{5}$/, 'Zip code must be a valid 5-digit number')
-            //     .required('Zip code is requied')
         }),
-        onSubmit: (values) => {
-            console.log(`Form data: ${values}`)
-        }
-    })
+        
+                    onSubmit: (values) => {
+                        fetch('/signup', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify(values),
+                        })
+                            .then((res) =>
+                                res.json().then((data) => {
+                                    if (res.ok) {
+                                        console.log('Signup successful:', data)
+                                    } else {
+                                        console.error(`Error: ${data.error}`)
+                                    }
+                                })
+                            )
+                            .catch((e) => {
+                                console.error('Network or server error:', e)
+                            })
+                    },
+                })
 
     return (
         <form onSubmit={formik.handleSubmit}>
@@ -88,65 +98,7 @@ function SignupForm() {
                     )}
                 </div>
             </div>
-            {/* <br /> */}
-            {/* <div>
-                <label htmlFor='pet_name'>Pet name</label>
-                <input
-                    id='pet_name'
-                    name='pet_name'
-                    type='text'
-                    value={formik.values.pet_name}
-                    onChange={formik.handleChange}
-                />
-            </div> */}
-
-            {/* <div>
-                {formik.errors.pet_name && formik.touched.pet_name && (
-                    <div className='error'>{formik.errors.pet_name}</div>
-                )}
-            </div>
-            <br />
-            <div>
-                <label htmlFor='pet_type'>Pet Type</label>
-                <div>
-                    <select
-                        id='pet_type'
-                        name='pet_type'
-                        value={formik.values.pet_type}
-                        onChange={formik.handleChange}>
-
-                        <option value=''>Select one</option>
-                        <option value='cat'>Cat</option>
-                        <option value='dog'>Dog</option>
-                        <option value='bird'>Bird</option>
-
-                    </select>
-                </div>
-                <div>
-                    {formik.errors.pet_type && formik.touched.pet_type && (
-                        <div className='error'>{formik.errors.pet_type}</div>
-                    )}
-                </div>
-
-
-            </div> */}
-            <br />
-            {/* <div>
-                <label htmlFor='zip_code'>Zip code</label>
-                <input
-                    id='zip_code'
-                    name='zip_code'
-                    type='text'
-                    value={formik.values.zip_code}
-                    onChange={formik.handleChange}
-                />
-            </div>
-            <div>
-                {formik.errors.zip_code && formik.touched.zip_code && (
-                    <div className='error'>{formik.errors.zip_code}</div>
-                )}
-            </div>
-            <br /> */}
+            
             <div><button type='submit'>Sign Up</button></div>
 
         </form>
