@@ -24,29 +24,28 @@ function SignupForm() {
                 .oneOf([Yup.ref('password'), null], 'Password must match')
                 .required('Confirm password is required.'),
         }),
-        
-                    onSubmit: (values) => {
-                        fetch('/signup', {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                            },
-                            body: JSON.stringify(values),
-                        })
-                            .then((res) =>
-                                res.json().then((data) => {
-                                    if (res.ok) {
-                                        console.log('Signup successful:', data)
-                                    } else {
-                                        console.error(`Error: ${data.error}`)
-                                    }
-                                })
-                            )
-                            .catch((e) => {
-                                console.error('Network or server error:', e)
-                            })
-                    },
+        onSubmit: (values) => {
+            fetch('/signup', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(values)
+            })
+                .then(res => {
+                    if (res.ok) {
+                        return res.json()
+                        // console.log('Successful submit')
+                    } else {
+                        throw new Error(`Submit failed! ${res.status}`)
+                    }
                 })
+                .then(data =>  console.log(data))
+                .catch(e => console.log(`Network or server error: ${e}`))
+            
+        }
+    
+                 })
 
     return (
         <form onSubmit={formik.handleSubmit}>

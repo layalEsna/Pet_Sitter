@@ -23,21 +23,43 @@ function Appointment() {
                     (value) => {
                         if (!value) return false
                         const today = new Date()
-                        
-                        const inputDate = new Date(value)
-                        
-                        return inputDate >= today
-                        
-                }
 
-            ),
-            
+                        const inputDate = new Date(value)
+
+                        return inputDate >= today
+
+                    }
+
+                ),
+
             duration: Yup.number()
                 .required('Duration is required.')
         }),
         onSubmit: (values) => {
-            console.log(`Form submitted, ${values}`)
+            fetch('/appointment', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(values)
+            })
+                .then(res => {
+                    if (res.ok) {
+                        return res.json()
+                    }
+                    else {
+                        throw new Error(`Submit failed. Error: ${res.status}`)
+                    }
+                })
+                .then(data => {
+                    
+                        console.log(`Successful submit: ${data}`)
+                    
+                })
+                .catch(e => {console.error('Network or server error:', e)})
+            
         }
+        
     })
     return (
         <div>
