@@ -95,6 +95,7 @@ class PetSitter(db.Model, SerializerMixin):
     sitter_name = db.Column(db.String, nullable=False)
     location = db.Column(db.String, nullable=False)
     price = db.Column(db.Integer, nullable=False)
+    
 
 
     pet_owners = db.relationship('PetOwner', secondary='appointments', back_populates='pet_sitters', overlaps="appointments")

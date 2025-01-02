@@ -4,7 +4,7 @@ from flask import Flask, request, jsonify
 import logging
 
 from flask_migrate import Migrate
-from models import db, bcrypt, PetOwner, PetSitter 
+from models import db, bcrypt, PetOwner, PetSitter , Appointment
 
 from flask_cors import CORS
 
@@ -77,6 +77,35 @@ def make_appointment():
     date = data.get('date')
     duration = data.get('duration')
     rating = data.get('data')
+
+@app.route('/appoinment', methods=['POST'])
+
+def appointment_form():
+    data = request.get_json()
+    pet_name = data.get('pet_name')
+    pet_type = data.get('pet_type')
+    date = data.get('date')
+    duration = data.get('duration')
+
+    if not isinstance(pet_name, str):
+        raise ValueError('Pet name must be string.')
+    if not pet_type or not isinstance(pet_type, str):
+        raise ValueError('Pet type is required and must be string.')
+    if not date or not isinstance(date, date):
+        raise ValueError('Date is required and must be type date.')
+    if not duration or not isinstance(duration, int):
+        raise ValueError('Duration is required and must be type integer.')
+
+    new_appointment = Appointment(
+        pet_name = pet_name,
+        pet_type = pet_type,
+        date = date,
+        duration = duration
+    )
+    db.session.add(new_appointment)
+    db.session.commit()
+
+    return jsonify(new_appointment.to_dict()), 201
 
 
 
