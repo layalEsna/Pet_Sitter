@@ -46,6 +46,7 @@ function SignupForm() {
                     id='user_name'
                     type='text'
                     name='user_name'
+                    onBlur={formik.handleBlur}
                     value={formik.values.user_name}
                     onChange={formik.handleChange}
                 />
@@ -60,6 +61,7 @@ function SignupForm() {
                     id='password'
                     type='password'
                     name='password'
+                    onBlur={formik.handleBlur}
                     value={formik.values.password}
                     onChange={formik.handleChange}
                 />
@@ -76,6 +78,7 @@ function SignupForm() {
                     id='confirm_password'
                     type='password'
                     name='confirm_password'
+                    onBlur={formik.handleBlur}
                     value={formik.values.confirm_password}
                     onChange={formik.handleChange}
                 />

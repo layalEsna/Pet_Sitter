@@ -2,6 +2,7 @@
 import './App.css';
 import SignupForm from './SignupForm';
 import PetSittersPage from './PetSittersPage';
+import Appointment from './Appointment';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 function App() {
@@ -11,7 +12,8 @@ function App() {
         <h1>Signup Form</h1>
 
         <SignupForm />
-        <PetSittersPage/>
+        <PetSittersPage />
+        <Appointment/>
 
         {/* <Routes>
           <Route path="/signup" element={<SignupForm />} />
