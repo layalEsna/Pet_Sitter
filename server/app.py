@@ -79,8 +79,6 @@ def get_pet_sitter(id):
     sitter_data['avg_rating'] = pet_sitter.avg_rating()
     return jsonify(sitter_data)
 
-
-
 @app.route('/appointment', methods=['POST'])
 
 def appointment_form():
