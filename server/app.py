@@ -5,6 +5,7 @@ import logging
 
 from flask_migrate import Migrate
 from models import db, bcrypt, PetOwner, PetSitter , Appointment
+from datetime import date
 
 from flask_cors import CORS
 
@@ -68,17 +69,19 @@ def post():
 @app.route('/pet_sitters', methods=['GET'])
 def get():
     pet_sitters = PetSitter.query.all()
+    
     return jsonify([sitter.to_dict() for sitter in pet_sitters])
 
-@app.route('/appointment')
-def make_appointment():
+@app.route('/pet_sitters/<int:id>', methods=['GET'])
+def get_pet_sitter(id):
+    pet_sitter = PetSitter.query.filter(PetSitter.id==id).first()
+    sitter_data = pet_sitter.to_dict()
+    sitter_data['avg_rating'] = pet_sitter.avg_rating()
+    return jsonify(sitter_data)
 
-    data = request.get_json()
-    date = data.get('date')
-    duration = data.get('duration')
-    rating = data.get('data')
 
-@app.route('/appoinment', methods=['POST'])
+
+@app.route('/appointment', methods=['POST'])
 
 def appointment_form():
     data = request.get_json()
@@ -107,7 +110,22 @@ def appointment_form():
 
     return jsonify(new_appointment.to_dict()), 201
 
+@app.route('/appointment/<int:id>', methods=['POST'])
 
+def rate_service(id):
+    data = request.get_json()
+    rating = data.get('rating')
+    if rating is not None:
+        if rating < 1 or rating > 5 or not isinstance(rating, int):
+            return jsonify({'error': 'Rating must be between 1 and 5 and must be integer.'}), 400    
+        rate_service = Appointment.query.filter(Appointment.id==id).first()
+
+        if not rate_service:
+            return jsonify({'error': 'Appointment not found'}), 404
+        rate_service.rating = rating
+
+        db.session.commit()
+        return jsonify({'message': 'Rating submitted successfully.'}), 200
 
 
 if __name__ == "__main__":

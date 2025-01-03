@@ -88,6 +88,11 @@ class PetOwner(db.Model, SerializerMixin):
     def __repr__(self):
         return f'<Pet {self.user_name}>'
     
+class AppointmentStatus(Enum):
+       SCHEDULED = 'Scheduled'
+       COMPLETED = 'Completed'
+       CANCELLED = 'Cancelled'
+    
 class PetSitter(db.Model, SerializerMixin):
     __tablename__ = 'pet_sitters'
 
@@ -96,15 +101,15 @@ class PetSitter(db.Model, SerializerMixin):
     location = db.Column(db.String, nullable=False)
     price = db.Column(db.Integer, nullable=False)
     
-
-
     pet_owners = db.relationship('PetOwner', secondary='appointments', back_populates='pet_sitters', overlaps="appointments")
     appointments = db.relationship('Appointment', back_populates='pet_sitter', cascade='all, delete-orphan', overlaps="pet_owners,pet_sitters")
 
-    serialize_only = ('id', 'sitter_name', 'location', 'price')
+    serialize_only = ('id', 'sitter_name', 'location', 'price', 'rating')
 
     def to_dict(self):
-        return {field: getattr(self, field) for field in self.serialize_only}
+        result = {field: getattr(self, field) for field in self.serialize_only}
+        result['avg_rating'] = self.avg_rating()
+        return result
     
     @validates('sitter_name')
     def sitter_name_validate(self, key, sitter_name):
@@ -135,12 +140,16 @@ class PetSitter(db.Model, SerializerMixin):
         rating = db.session.query(func.avg(Appointment.rating)).filter(
             Appointment.pet_sitter_id == self.id).filter(Appointment.rating != None).scalar()
         return round(rating, 2) if rating else None
+    
 
+    
+    def update_status(self):
+        active_appointment = db.session.query(Appointment).filter(
+            Appointment.pet_sitter_id == self.id, Appointment.status == AppointmentStatus.SCHEDULED
+        ).count()
+        self.status = AppointmentStatus.SCHEDULED if active_appointment > 0 else AppointmentStatus.COMPLETED
+        db.session.commit()
 
-class AppointmentStatus(Enum):
-       SCHEDULED = 'Scheduled'
-       COMPLETED = 'Completed'
-       CANCELLED = 'Cancelled'
 
 class Appointment(db.Model, SerializerMixin):
     __tablename__ = 'appointments'
